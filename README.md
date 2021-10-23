@@ -1,5 +1,3 @@
-[TOC]
-
 # Word Cloud
 ## Requirement
 Create a "word cloud" from a text by writing a script. This script needs to:
