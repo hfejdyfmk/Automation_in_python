@@ -1,0 +1,62 @@
+# Here are all the installs and imports you will need for your word cloud script and uploader widget
+
+!pip install wordcloud
+!pip install fileupload
+!pip install ipywidgets
+!jupyter nbextension install --py --user fileupload
+!jupyter nbextension enable --py fileupload
+
+import wordcloud
+import numpy as np
+from matplotlib import pyplot as plt
+from IPython.display import display
+import fileupload
+import io
+import sys
+
+# Given a file, calculate the frequency of each word. After that, generate a word cloud object.
+
+def calculate_frequencies(file_contents):
+    """This function count the frequency of words of a given file. The result is passed to wordcloud module as a parameter"""
+    
+    # To have a interesting word cloud, we remove some general words which are less content-specificed
+    # The "uninteresting_words" list contains the words we would like to skip
+    uninteresting_words = ["the", "a", "to", "if", "is", "it", "of", "and", "or", "an", "as", "i", "me", "my", \
+    "we", "our", "ours", "you", "your", "yours", "he", "she", "him", "his", "her", "hers", "its", "they", "them", \
+    "their", "what", "which", "who", "whom", "this", "that", "am", "are", "was", "were", "be", "been", "being", \
+    "have", "has", "had", "do", "does", "did", "but", "at", "by", "with", "from", "here", "when", "where", "how", \
+    "all", "any", "both", "each", "few", "more", "some", "such", "no", "nor", "too", "very", "can", "will", "just", "in", "for"]
+    
+    # Split the given file into a list of words
+    plaintext_list = []
+    plaintext_list = file_contents.lower().split()
+    
+    # Only keep words which are all composed of alphabet
+    alphabet_list = []
+    for word in plaintext_list:
+        if word.isalpha():
+            alphabet_list.append(word)
+
+    words_frequency = {}
+    
+    # Remain interesting words and skip uninteresting words define in "uninteresting_words"
+    interesting_list = []
+    for word in alphabet_list:
+        if word not in uninteresting_words:
+            interesting_list.append(word)
+    
+    # Count the frequency of words and then store the result in a dictionary
+    for word in set(interesting_list):
+        words_frequency[word] = interesting_list.count(word)    
+   
+    #wordcloud
+    cloud = wordcloud.WordCloud()
+    cloud.generate_from_frequencies(words_frequency)
+    return cloud.to_array()
+
+
+# Display wordcloud image
+myimage = calculate_frequencies(file_contents)
+plt.imshow(myimage, interpolation = 'nearest')
+plt.axis('off')
+plt.show()
