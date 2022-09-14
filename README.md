@@ -11,3 +11,4 @@ Create a "word cloud" from text by writing a script. This script will:
 <!--A dictionary is the output of the calculate_frequencies function. The wordcloud module will then generate the image from your dictionary.-->
 
 *Source of project topic: Crash Course on Python, from Google on Coursera*
+
